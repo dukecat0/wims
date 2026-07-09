@@ -3,7 +3,7 @@ name = "wims"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-description = "where is my space — a terminal UI for finding and cleaning up large files"
+description = "A terminal UI for finding and cleaning up large files"
 repository = "https://github.com/dukecat0/wims"
 
 [dependencies]
