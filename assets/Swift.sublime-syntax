@@ -1,0 +1,70 @@
+%YAML 1.2
+---
+# Minimal Swift grammar for wims previews. syntect's bundled Sublime
+# packages predate Swift, so this fills the gap: comments, strings with
+# interpolation, numbers, keywords, attributes, and types.
+name: Swift
+file_extensions:
+  - swift
+scope: source.swift
+
+contexts:
+  main:
+    - match: '//.*$\n?'
+      scope: comment.line.double-slash.swift
+    - match: '/\*'
+      push: block_comment
+    - match: '"""'
+      push: multiline_string
+    - match: '"'
+      push: string
+    - match: '\b(?:0x[0-9a-fA-F_]+|0b[01_]+|0o[0-7_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][+-]?[0-9_]+)?)\b'
+      scope: constant.numeric.swift
+    - match: '\b(?:true|false|nil)\b'
+      scope: constant.language.swift
+    - match: '\b(?:class|struct|enum|protocol|extension|actor|macro|func|init|deinit|subscript|typealias|associatedtype)\b'
+      scope: storage.type.swift
+    - match: '\b(?:let|var|static|lazy|weak|unowned|final|open|public|internal|fileprivate|private|package|mutating|nonmutating|override|required|convenience|indirect|dynamic|optional|inout|some|any|borrowing|consuming)\b'
+      scope: storage.modifier.swift
+    - match: '\b(?:if|else|guard|switch|case|default|for|while|repeat|break|continue|fallthrough|return|throw|throws|rethrows|do|catch|try|defer|where|in|is|as|async|await|import|operator|precedencegroup)\b'
+      scope: keyword.control.swift
+    - match: '@\w+'
+      scope: keyword.other.attribute.swift
+    - match: '\b(?:self|Self|super)\b'
+      scope: variable.language.swift
+    - match: '\$[0-9]+'
+      scope: variable.other.swift
+    - match: '\b[A-Z][A-Za-z0-9_]*\b'
+      scope: entity.name.class.swift
+
+  block_comment:
+    - meta_scope: comment.block.swift
+    - match: '/\*'
+      push: block_comment
+    - match: '\*/'
+      pop: true
+
+  string:
+    - meta_scope: string.quoted.double.swift
+    - match: '\\\('
+      scope: punctuation.section.embedded.swift
+      push: interpolation
+    - match: '\\.'
+      scope: constant.character.escape.swift
+    - match: '"'
+      pop: true
+    - match: '$\n?'
+      pop: true
+
+  multiline_string:
+    - meta_scope: string.quoted.triple.swift
+    - match: '\\.'
+      scope: constant.character.escape.swift
+    - match: '"""'
+      pop: true
+
+  interpolation:
+    - match: '\)'
+      scope: punctuation.section.embedded.swift
+      pop: true
+    - include: main

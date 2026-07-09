@@ -1,0 +1,26 @@
+[package]
+name = "wims"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "where is my space — a terminal UI for finding and cleaning up large files"
+repository = "https://github.com/dukecat0/wims"
+
+[dependencies]
+ratatui = "0.30"
+rayon = "1.10"
+libc = "0.2"
+image = "0.25.10"
+syntect = { version = "5.3.0", default-features = false, features = ["default-fancy"] }
+
+[profile.release]
+lto = true
+strip = true
+
+# macOS trashes via NSFileManager directly (see src/app.rs); other
+# platforms use the cross-platform `trash` crate.
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2-foundation = { version = "0.3", default-features = false, features = ["std", "NSFileManager", "NSURL", "NSString", "NSError"] }
+
+[target.'cfg(not(target_os = "macos"))'.dependencies]
+trash = "5"
