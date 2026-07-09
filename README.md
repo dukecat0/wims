@@ -114,6 +114,10 @@ switches to a summary when the scan completes.
   earlier trash actions in turn; a permanent delete (`D`) can't be undone.
 - The view is a snapshot from scan time. If something was removed outside
   wims, deleting it just updates the view instead of erroring.
-- Hard links are counted once per link (like `du` without `-l`
-  deduplication), so totals can slightly overstate multi-linked content.
+- Each physical object is counted once. Hard links and, on macOS,
+  firmlinks (which make the data volume visible both at `/Users`,
+  `/Applications`, … and again under `/System/Volumes/Data`) are
+  deduplicated by inode — so scanning `/` reports true usage instead of
+  roughly double. A directory reached a second way is shown but not
+  re-counted; its bytes are attributed to whichever path reached it first.
 
