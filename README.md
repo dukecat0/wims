@@ -56,7 +56,7 @@ and cleaning it up.
 Requires a Rust toolchain ([rustup.rs](https://rustup.rs)).
 
 ```sh
-cargo install --path .
+cargo install wims
 ```
 
 ## Usage
